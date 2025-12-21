@@ -1,0 +1,44 @@
+services:
+  wazuh.manager:
+    # This specific image is a known stable community build for ARM64
+    image: jperon/wazuh-manager:4.9.0
+    hostname: wazuh.manager
+    restart: always
+    environment:
+      - INDEXER_URL=https://wazuh.indexer:9200
+      - INDEXER_USERNAME=admin
+      - INDEXER_PASSWORD=SecretPassword
+    ports:
+      - "1514:1514"
+      - "55000:55000"
+    volumes:
+      - wazuh_etc:/var/ossec/etc
+      - wazuh_logs:/var/ossec/logs
+      - ./config/wazuh_indexer_ssl_certs/root-ca.pem:/etc/ssl/root-ca.pem
+    networks:
+      - wazuh-net
+
+  wazuh.dashboard:
+    # Use native ARM64 OpenSearch Dashboard
+    image: opensearchproject/opensearch-dashboards:2.11.0
+    hostname: wazuh.dashboard
+    container_name: single-node-wazuh.dashboard-1
+    restart: always
+    ports:
+      - 443:5601
+    environment:
+      - OPENSEARCH_HOSTS=["https://wazuh.indexer:9200"]
+      - WAZUH_API_URL=https://wazuh.manager:55000
+      - API_USERNAME=wazuh-wui
+      - API_PASSWORD=MyS3cr37P450r.*-
+      - OPENSEARCH_SSL_VERIFICATIONMODE=none
+    networks:
+      - wazuh-net
+
+networks:
+  wazuh-net:
+    driver: bridge
+
+volumes:
+  wazuh_etc:
+  wazuh_logs:
