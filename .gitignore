@@ -1,0 +1,31 @@
+# === Wazuh & System Secrets ===
+# Prevents accidental upload of passwords and keys
+pass.txt
+credentials.txt
+access_token.json
+*.key
+*.pem
+*.crt
+
+# === Lab Environment & Data ===
+# We keep the configuration templates but ignore the heavy data volumes
+wazuh-docker/single-node/config/
+wazuh-docker/single-node/data/
+**/backup/
+.env
+
+# === Python & AI Integration (Phase 3) ===
+# Standard ignores for Python middleware and Ollama temp files
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+.ipynb_checkpoints/
+
+# === OS & IDE Junk ===
+.DS_Store
+.vscode/
+Thumbs.db
+*.tmp
+*.log
