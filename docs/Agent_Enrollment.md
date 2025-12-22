@@ -8,7 +8,7 @@ Since I’m using the **DGX Spark** as both the Manager and the first monitored 
 
 **Deployment Pivot**: During installation, a package conflict was identified between **wazuh-agent** and **wazuh-manager**. To resolve this, host monitoring was implemented using the native Agent 000 built into the Manager, optimizing resource usage on the ARM64 platform by eliminating redundant background processes.
 
-![Proof of Native Host Monitoring (Agent 000) on ARM64](images/agent000-verification.png)
+![Proof of Native Host Monitoring (Agent 000) on ARM64](./images/agent000-verification.png)
 
 ---
 
@@ -22,7 +22,7 @@ sudo nano /var/ossec/etc/ossec.conf
 ```
 The <syscheck> section controls File Integrity Monitoring (FIM). The screenshot below confirms it’s monitoring my home project directory.
 
-![Proof of Data Pipeline verification.](images/data_pipeline_verification.png)
+![Proof of Data Pipeline verification.](./images/data_pipeline_verification.png)
 
 ---
 

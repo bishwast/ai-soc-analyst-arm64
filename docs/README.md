@@ -9,15 +9,15 @@ The core of the project is a stateful correlation engine that detects complex be
 The project is divided into three distinct phases. Access the detailed technical logs below:
 
 ### **Part 1: Project Definition**
-* **[Requirement_Gathering.md](./docs/Requirement_Gathering.md)**: Defines the project scope, hardware constraints, and Non-Functional Requirements (NFRs) for data sovereignty and zero-cost AI.
+* **[Requirement_Gathering.md](./Requirement_Gathering.md)**: Defines the project scope, hardware constraints, and Non-Functional Requirements (NFRs) for data sovereignty and zero-cost AI.
 
 ### **Part 2: Infrastructure & Deployment**
-* **[Infrastructure_Setup.md](./docs/Infrastructure_Setup.md)**: Documentation of the native AARCH64 installation, including deep-dive troubleshooting for GPG key restoration and DPKG database repairs.
-* **[Native Installation Report (PDF)](./docs/reports/Native_Wazuh_Report.pdf)**: Comprehensive visual evidence, terminal logs, and system health verification screenshots.
-* **[Agent_Enrollment.md](./docs/Agent_Enrollment.md)**: Self-monitoring verification using the Wazuh built-in agent (ID 000).
+* **[Infrastructure_Setup.md](./Infrastructure_Setup.md)**: Documentation of the native AARCH64 installation, including deep-dive troubleshooting for GPG key restoration and DPKG database repairs.
+* **[Native Installation Report (PDF)](./reports/Native_Wazuh_Report.pdf)**: Comprehensive visual evidence, terminal logs, and system health verification screenshots.
+* **[Agent_Enrollment.md](./Agent_Enrollment.md)**: Self-monitoring verification using the Wazuh built-in agent (ID 000).
 
 ### **Part 3: Detection Engineering & AI Integration**
-* **[Threat_Detection_Lab.md](./docs/Threat_Detection_Lab.md)**: Technical deep-dive into the custom PCRE2 decoders and the Tier-2 correlation rules engineered to detect high-frequency Hydra SSH brute-force attacks.
+* **[Threat_Detection_Lab.md](./Threat_Detection_Lab.md)**: Technical deep-dive into the custom PCRE2 decoders and the Tier-2 correlation rules engineered to detect high-frequency Hydra SSH brute-force attacks.
 * **[AI SOC Analyst (Python Script)](./src/ai_analyst.py)**: The real-time automation bridge that tails the Wazuh `alerts.json` file and pushes high-severity events to Llama 3.2 via the Ollama API.
 * **[Final Incident Evidence](./reports/finale_result.png)**: Visual proof of the end-to-end pipeline: **Attack Simulation -> SIEM Correlation -> AI Summarization**.
 

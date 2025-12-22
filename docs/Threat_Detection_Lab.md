@@ -28,7 +28,7 @@ To validate the detection pipeline, a high-velocity brute-force attack was simul
 - **Methodology**: Password spraying with a dedicated lab wordlist (`lab_passwords.txt`) at a rate of 4 concurrent threads (`-t 4`) to trigger the frequency threshold.
 
 ### 📸 Reference:
-![Hydra Attack Execution Screenshot](reports/Hydra_Attack_Execution.png)
+![Hydra Attack Execution Screenshot](./reports/Hydra_Attack_Execution.png)
 
 ---
 
@@ -84,11 +84,11 @@ The AI processes the technical telemetry (Source IP, User, Frequency) and genera
 
     Structural Integrity: Validated XML schema via wazuh-analysisd -t.
 
-![Validated XML schema via wazuh-analysisd](reports/Analysisd_Validation_Success.png)
+![Validated XML schema via wazuh-analysisd](./reports/Analysisd_Validation_Success.png)
 
     Pipeline Proof: Verified 5-to-1 escalation via wazuh-logtest.
 
-![Verified 5-to-1 escalation via wazuh-logtest](reports/Successful_Correlation_Rule_100001.png)
+![Verified 5-to-1 escalation via wazuh-logtest](./reports/Successful_Correlation_Rule_100001.png)
 
 ---
 
