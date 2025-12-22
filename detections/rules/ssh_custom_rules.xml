@@ -1,0 +1,12 @@
+<group name="ssh_custom_rules,">
+
+  <rule id="100001" level="10" frequency="5" timeframe="60">
+    <if_matched_sid>5760</if_matched_sid>
+    <same_source_ip />
+    <description>AI-Detected: High-Frequency Credential Stuffing Attack from $(srcip).</description>
+    <mitre>
+      <id>T1110.004</id>
+    </mitre>
+  </rule>
+
+</group>

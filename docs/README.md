@@ -6,14 +6,20 @@ This project demonstrates a next-generation, privacy-first **Security Operations
 ## 📁 Project Documentation & Workflow
 The project is divided into three distinct phases. Access the detailed technical logs below:
 
-### **Phase 1: Project Definition**
+### **Part 1: Project Definition**
 * **[Requirement_Gathering.md](./Requirement_Gathering.md)**: Defines the project scope, hardware constraints, and Non-Functional Requirements (NFRs) for data sovereignty and zero-cost AI.
 
-### **Phase 2: Infrastructure & Deployment**
+### **Part 2: Infrastructure & Deployment**
 * **[Infrastructure_Setup.md](./Infrastructure_Setup.md)**: Documentation of the native AARCH64 installation, including deep-dive troubleshooting for GPG key restoration and DPKG database repairs.
 * **[Native Installation Report (PDF)](./reports/Native_Wazuh_Report.pdf)**: Comprehensive visual evidence, terminal logs, and system health verification screenshots.
 
-### **Phase 3: AI Integration (Work in Progress)**
+### * [Agent_Enrollment.md](./Agent_Enrollment.md): Self monitoring verification using Wazuh built-in agent (ID 000) in DGX Spark.
+
+### * [Threat_Detection_Lab.md](./Threat_Detection_Lab.md): Log of the Hydra SSH brute-force simulation and Wazuh rule verification.
+
+
+
+### **Part 3: AI Integration (Work in Progress)**
 * **Upcoming**: Python middleware to poll the Wazuh API and generate automated incident summaries using **Ollama**.
 
 ---

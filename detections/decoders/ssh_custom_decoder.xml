@@ -1,0 +1,9 @@
+<decoder name="ssh-custom-hunt">
+  <prematch>^Failed password for</prematch>
+</decoder>
+
+<decoder name="ssh-custom-fields">
+  <parent>ssh-custom-hunt</parent>
+  <regex>for (\S+) from (\S+) port (\d+)</regex>
+  <order>user, srcip, srcport</order>
+</decoder>
