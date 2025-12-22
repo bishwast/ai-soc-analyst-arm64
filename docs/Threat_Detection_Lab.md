@@ -1,7 +1,6 @@
 # Project Report: AI-Powered Threat Detection & Incident Summarization
 
 **Engineer**: Sunil | **Date**: December 21, 2025
-
 **Platform**: Wazuh SIEM + Ubuntu ARM64 (DGX Spark) + Llama 3.2 (AI Analyst)
 
 ---
@@ -12,32 +11,28 @@ This project involved engineering a production-grade detection pipeline to ident
 ---
 
 ## 2. Architecture & Lab Environment
-
-- **SIEM Manager**: Wazuh 4.x running on Ubuntu 24.04 (ARM64).
-- **Threat Surface**: Local SSH service on DGX Spark host.
-- **Security Automation**: Python-based telemetry bridge.
-- **AI Engine**: Ollama running Llama 3.2 for local, private incident analysis.
+* **SIEM Manager**: Wazuh 4.12.0 running natively on Ubuntu 24.04 (ARM64).
+* **Threat Surface**: Local SSH service on DGX Spark host.
+* **Security Automation**: Python 3.12 middleware (utilizing PEP 668 virtual environments).
+* **AI Engine**: Ollama running Llama 3.2 (3B) for private, on-premise inference.
 
 ---
 
 ## 3. Phase 1: Attack Simulation (Red Team)
+To validate the detection pipeline, a high-velocity brute-force attack was simulated using **Hydra v9.5**.
+* **Target**: `ssh://127.0.0.1`
+* **Methodology**: Password spraying with a dedicated lab wordlist (`lab_passwords.txt`) at a rate of 4 concurrent threads (`-t 4`) to trigger the stateful frequency threshold.
 
-To validate the detection pipeline, a high-velocity brute-force attack was simulated using **Hydra v9.x**.
-
-- **Target**: `ssh://127.0.0.1`
-- **Methodology**: Password spraying with a dedicated lab wordlist (`lab_passwords.txt`) at a rate of 4 concurrent threads (`-t 4`) to trigger the frequency threshold.
-
-### 📸 Reference:
-![Hydra Attack Execution Screenshot](./reports/Hydra_Attack_Execution.png)
+**Evidence**: 
+![Hydra Attack Execution](./reports/Hydra_Attack_Execution.png)
 
 ---
 
 ## 4. Phase 2: Detection Engineering (Blue Team)
-
-I engineered a custom two-tier detection hierarchy to identify behavioral patterns rather than isolated failures.
+I engineered a custom detection hierarchy to identify behavioral patterns rather than isolated failures.
 
 ### 4.1 Custom PCRE2 Decoder
-Standard decoders were optimized to extract source IPs and destination users into structured variables, facilitating precise AI analysis.
+A custom decoder was developed to extract source IPs and destination users into structured variables, facilitating precise downstream AI analysis.
 
 ```xml
 <decoder name="ssh-custom-hunt">
@@ -46,18 +41,15 @@ Standard decoders were optimized to extract source IPs and destination users int
   <order>user, srcip, srcport</order>
 </decoder>
 ```
-
 ### 4.2 Behavioral Correlation Rules
 
 A correlation rule was implemented to track the state of the authentication stream. This prevents "Alert Flooding" by grouping multiple failures into a single high-severity incident.
+
+  >## Note: During final integration, the logic was optimized to hook into the system's native Rule 5760 to ensure compatibility with built-in SSH decoders.
 ```xml
 <group name="ssh_custom_rules,">
-  <rule id="100002" level="5">
-    <decoded_as>ssh-custom-hunt</decoded_as>
-    <description>Custom SSH login failure detected.</description>
-  </rule>
   <rule id="100001" level="10" frequency="5" timeframe="60">
-    <if_matched_sid>100002</if_matched_sid>
+    <if_matched_sid>5760</if_matched_sid>
     <same_source_ip />
     <description>Advanced Detection: Credential Stuffing attempt from $(srcip).</description>
     <mitre><id>T1110.004</id></mitre>
@@ -67,54 +59,31 @@ A correlation rule was implemented to track the state of the authentication stre
 ---
 
 ## 5. Phase 3: AI-Automated Analysis (The "AI Analyst")
-
-The final phase bridges the gap between raw data and human-readable intelligence.
+This phase bridges the gap between raw data and human-readable intelligence.
 
 ### 5.1 Real-Time Telemetry Bridge
-A **Python** script was developed to "tail" the `alerts.json` file in real-time. When a **Rule 100001** alert is detected, the script extracts the JSON payload and sends it to the **Llama 3.2 API** for automated incident analysis.
+A **Python** script was developed to "tail" the `alerts.json` file in real-time. When a **Rule 100001** alert is detected, the script extracts the JSON payload and pushes it to the **Llama 3.2 API** for automated incident analysis.
 
-### 5.2 AI Incident Summary
-The AI processes the technical telemetry (Source IP, User, Frequency) and generates an executive summary:
-
-> **"The system identified a Credential Stuffing attempt targeting the 'root' account from IP 192.168.1.100. Recommendation: Immediate firewall block and MFA enforcement."**
+### 5.2 Automated Logic Flow
+1.  **Ingestion**: The system continuously monitors `/var/ossec/logs/alerts/alerts.json`.
+2.  **Filtering**: The engine isolates High-Severity Rule **100001** (Credential Stuffing), ignoring low-level noise.
+3.  **Inference**: Technical telemetry is interpreted by **Llama 3.2** via the local **Ollama API**.
+4.  **Output**: The AI generates a concise executive brief and a specific remediation recommendation.
 
 ---
 
 ## 6. Evidence & Validation
 
-    Structural Integrity: Validated XML schema via wazuh-analysisd -t.
-
+* **Structural Integrity**: Validated XML schema via `wazuh-analysisd -t` to ensure service stability.
 ![Validated XML schema via wazuh-analysisd](./reports/Analysisd_Validation_Success.png)
 
-    Pipeline Proof: Verified 5-to-1 escalation via wazuh-logtest.
-
+* **Pipeline Proof**: Verified 5-to-1 escalation logic via `wazuh-logtest`.
 ![Verified 5-to-1 escalation via wazuh-logtest](./reports/Successful_Correlation_Rule_100001.png)
+
+* **Final Result**: Successful AI-generated summary triggered by a live Hydra attack simulation.
+![AI SOC Analyst Final Result](./reports/finale_result.png)
 
 ---
 
 ## 7. Conclusion
-
-This project successfully demonstrates the ability to engineer a modern, automated **SOC workflow**. By combining **Detection Engineering** (custom XML logic) with **AI Integration** (Python and Llama 3.2), I have created a system that not only detects threats but interprets them, significantly reducing the **Mean Time to Respond (MTTR)**.
-
----
-
-## Phase 4: AI-Powered Incident Summarization
-
-### 4.1 Objective
-To bridge the gap between technical SIEM telemetry and executive decision-making. This phase demonstrates an automated "AI SOC Analyst" that interprets complex JSON alerts into human-readable summaries using a local LLM.
-
-### 4.2 Automated Logic Flow
-The integration was achieved via a custom Python-based telemetry bridge:
-1.  **Ingestion**: The script monitors `/var/ossec/logs/alerts/alerts.json` in real-time.
-2.  **Filtering**: It isolates High-Severity Rule **100001** (Credential Stuffing).
-3.  **Inference**: Telemetry is pushed to a local **Llama 3.2** model via the Ollama API.
-4.  **Output**: The AI generates a 2-sentence summary and a remediation recommendation.
-
-### 4.3 Final Project Evidence
-The following screenshot confirms the successful trigger of Rule 100001 and the subsequent AI-generated incident report.
-
-**Evidence**: ![AI SOC Analyst Final Result](reports/finale_result.png)
-
----
-## Final Project Conclusion
-By integrating Wazuh with Llama 3.2, I have successfully engineered an automated security pipeline. This project proves that custom detection engineering, combined with AI automation, can significantly reduce the Mean Time to Respond (MTTR) by providing SOC managers with instant, actionable intelligence.
+This project successfully demonstrates the ability to engineer a modern, automated **SOC workflow**. By combining **Detection Engineering** (custom XML logic) with **Local AI Integration** (Python and Llama 3.2), I have created a system that not only detects threats but interprets them, significantly reducing the **Mean Time to Respond (MTTR)** without compromising data sovereignty.
