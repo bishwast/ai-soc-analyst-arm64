@@ -31,7 +31,7 @@ Comprehensive visual evidence, terminal logs, and system health verification scr
 
 * **[Upgrade_Active_Response.md](./AI-SOC-Analyst-Phase-4.md)**: Implementation of the "Remediation Loop." This phase marks the transition from detection to autonomous defense.
 
-* **[Custom AI-Block Script](/ai-soc-analyst/docs/images_2/ai-block.py)**: A state-aware Python script that parses STDIN JSON alerts to dynamically update the Linux kernel firewall (iptables) and isolate malicious IPs.
+* **[Custom AI-Block Script](/docs/images_2/ai-block.py)**: A state-aware Python script that parses STDIN JSON alerts to dynamically update the Linux kernel firewall (iptables) and isolate malicious IPs.
 
 * **[Network Isolation Lab](./images_2/the%20bridge%20network%20-%20virtual.png)**: Documentation on using Network Namespaces and Veth Bridges to simulate professional external-to-internal attacks without compromising loopback security.
 
