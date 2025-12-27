@@ -19,7 +19,9 @@ The project is divided into three distinct phases. Access the detailed technical
 ### **Part 3: Detection Engineering & AI Integration**
 * **[Threat_Detection_Lab.md](./Threat_Detection_Lab.md)**: Technical deep-dive into the custom PCRE2 decoders and the Tier-2 correlation rules engineered to detect high-frequency Hydra SSH brute-force attacks.
 * **[AI SOC Analyst (Python Script)](./src/ai_analyst.py)**: The real-time automation bridge that tails the Wazuh `alerts.json` file and pushes high-severity events to Llama 3.2 via the Ollama API.
-* **[Final Incident Evidence](./reports/finale_result.png)**: Visual proof of the end-to-end pipeline: **Attack Simulation -> SIEM Correlation -> AI Summarization**.
+* **[Final Incident Evidence](./reports/finale_result.png)**
+**[AI Analyst Proof: Python Script Output](./reports/ai_analyst_proof.png)
+: Visual proof of the end-to-end pipeline: **Attack Simulation -> SIEM Correlation -> AI Summarization**.
 
 ---
 
