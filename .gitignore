@@ -29,3 +29,15 @@ venv/
 Thumbs.db
 *.tmp
 *.log
+
+# Ignore the SecLists directory
+SecLists/
+
+# Ignore local log files
+logs/
+*.log
+
+# Ignore local virtual environments or temporary files
+__pycache__/
+.env
+
